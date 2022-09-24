@@ -1,96 +1,210 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
 ---
 
-<Layout title="Welcome to Astro.">
-	<main>
-		<h1>Welcome to <span class="text-gradient">Astro</span></h1>
-		<p class="instructions">
-			Check out the <code>src/pages</code> directory to get started.<br />
-			<strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message above.
-		</p>
-		<ul role="list" class="link-card-grid">
-			<Card
-				href="https://docs.astro.build/"
-				title="Documentation"
-				body="Learn how Astro works and explore the official API docs."
-			/>
-			<Card
-				href="https://astro.build/integrations/"
-				title="Integrations"
-				body="Supercharge your project with new frameworks and libraries."
-			/>
-			<Card
-				href="https://astro.build/themes/"
-				title="Themes"
-				body="Explore a galaxy of community-built starter themes."
-			/>
-			<Card
-				href="https://astro.build/chat/"
-				title="Chat"
-				body="Come say hi to our amazing Discord community. ❤️"
-			/>
-		</ul>
+<Layout title="Calculadora del 4 x 1000 - Solo Colombia">
+	<main class="page__layout">
+		<div class="page__content">
+			<div class="page__col page__col--calculator">
+				<div class="page__form">
+					<h1>Calcular 4 x 1000</h1>
+
+					<div class="form__group">
+						<label for="total">
+							Ingrese el monto en pesos colombianos (sin puntos)
+						</label>
+						<input type="number" min="0" minlength="1" name="total" id="total" placeholder="1000000">
+					</div>
+
+					<button class="form_button">
+						Calcular impuesto
+					</button>
+
+					<hr role="separator" />
+
+					<ul class="page__taxes">
+						<li class="page__tax">
+							<p>
+								<strong>Monto ingresado</strong>: $<span id="tax">0</span>
+							</p>
+						</li>
+
+						<li class="page__tax">
+							<p>
+								<strong>4 x 1000 a pagar</strong>: $<span id="tax">0</span>
+							</p>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="page__col page__col--image">
+				<img src="/assets/images/taxes.jpg" alt="Tax" height="400">
+
+				<ul class="page__social">
+					<li>
+						<a href="https://github.com/luchoweb/calculate-4x1000" target="_blank" rel="noopener noreferrer" title="GitHub">
+							<img src="/assets/images/github-icon.png" alt="github" height="25">
+						</a>
+					</li>
+
+					<li>
+						<a href="https://www.linkedin.com/in/luchowebdev" target="_blank" rel="noopener noreferrer" title="LinkedIn">
+							<img src="/assets/images/linkedin-icon.png" alt="linkedin" height="25">
+						</a>
+					</li>
+
+					<li>
+						<a href="https://www.freepik.com/free-vector/monthly-expense-planning-reminder-appointment-payment-deadline-worker-with-timetable-organizer-schedule-countdown-payday-vector-isolated-concept-metaphor-illustration_12470255.htm#query=taxes&position=5&from_view=search" target="_blank" rel="noopener noreferrer" title="Vector by Freepik">
+							<img src="/assets/images/freepik-icon.png" alt="freepik" height="25">
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
 	</main>
 </Layout>
 
+<script>
+	const total = document.getElementById('total');
+	total.focus();
+</script>
+
 <style>
-	:root {
-		--astro-gradient: linear-gradient(0deg, #4f39fa, #da62c4);
+	.page__layout {
+		align-items: center;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		min-height: 100vh;
+		width: 100%;
 	}
 
-	h1 {
+	.page__content {
+		align-items: center;
+		background-color: var(--color-light);
+		box-shadow: 0 0 15px var(--color-primary-dark);
+		border-radius: .5rem;
+		display: flex;
+		flex-wrap: wrap;
+		margin: 0 auto;
+		width: 96%
+	}
+
+	.page__col {
+		flex: 1 1 100%;
+	}
+
+	.page__form {
+		padding: 2rem;
+	}
+	.page__form h1 {
+		margin: 0 0 2rem 0;
+	}
+
+	.form__group {
+		margin-bottom: 1rem;
+	}
+	.form__group label {
+		display: block;
+		margin-bottom: 1rem;
+	}
+	.form__group input {
+		appearance: none;
+		border: 2px solid var(--color-primary-dark);
+		border-radius: .5rem;
+		font-size: 1rem;
+		padding: 1rem;
+		max-width: 310px;
+		transition: border 200ms ease-in-out;
+		width: 100%;
+	}
+	.form__group input:focus {
+		border: 2px solid var(--color-primary);
+	}
+
+	.form_button {
+		appearance: none;
+		background-color: var(--color-primary-dark);
+		border: none;
+		border-radius: 1.5rem;
+		color: var(--color-light);
+		cursor: pointer;
+		font-size: 1rem;
+		padding: 1rem 2rem;
+		transition: background 200ms ease-in-out;
+	}
+	.form_button:hover {
+		background-color: var(--color-primary);
+	}
+
+	.page__col--calculator {
+		order: 2;
+		text-align: center;
+	}
+
+	.page__col--image {
+		order: 1;
+		text-align: center;
+	}
+	.page__col--image > img {
+		height: 200px;
+	}
+
+	.page__social {
+		align-items: center;
+		display: flex;
+		gap: 1rem;
+		list-style: none;
+		justify-content: center;
+		margin: 1rem 0 0;
+		padding: 0;
+	}
+
+	.page__taxes {
+		list-style: none;
+		margin: 2rem 0 0;
+		padding: 0;
+	}
+
+	.page__tax {
+		margin-bottom: .5rem;
+		text-align: left;
+	}
+	.page__tax p {
+		margin: 0;
+	}
+
+	hr {
+		border: none;
+		border-top: 1px solid #ccc;
 		margin: 2rem 0;
 	}
 
-	main {
-		margin: auto;
-		padding: 1em;
-		max-width: 60ch;
-	}
-
-	.text-gradient {
-		font-weight: 900;
-		background-image: var(--astro-gradient);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-size: 100% 200%;
-		background-position-y: 100%;
-		border-radius: 0.4rem;
-		animation: pulse 4s ease-in-out infinite;
-	}
-
-	@keyframes pulse {
-		0%,
-		100% {
-			background-position-y: 0%;
+	@media (min-width: 768px) {
+		.page__content {
+			width: 700px;
 		}
-		50% {
-			background-position-y: 80%;
+
+		.page__col {
+		flex: 1 1 50%;
+	}
+
+		.page__col--calculator {
+			order: 1;
+			text-align: left;
+		}
+		.page__col--image {
+			order: 2;
+		}
+
+		.page__col--image > img {
+			height: 300px;
 		}
 	}
 
-	.instructions {
-		line-height: 1.6;
-		margin: 1rem 0;
-		background: #4f39fa;
-		padding: 1rem;
-		border-radius: 0.4rem;
-		color: var(--color-bg);
-	}
-
-	.instructions code {
-		font-size: 0.875em;
-		border: 0.1em solid var(--color-border);
-		border-radius: 4px;
-		padding: 0.15em 0.25em;
-	}
-
-	.link-card-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
-		gap: 1rem;
-		padding: 0;
+	@media (min-width: 991px) {
+		.page__content {
+			width: 750px;
+		}
 	}
 </style>
