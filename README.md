@@ -3,4 +3,4 @@ A simple web app built with Astro.
 
 For practical purpose only.
 
-[Live here](https://cuatroxmil.netlify.app)
+[Live here](https://4x1000.netlify.app)
