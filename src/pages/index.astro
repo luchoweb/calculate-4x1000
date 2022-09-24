@@ -14,28 +14,45 @@ import ImageColumn from '../components/ImageColumn.astro';
 				<ImageColumn />
 			</div>
 		</div>
+
+		<p class="page__copy">
+			&copy; 2022 &bullet; by Lucho Web
+		</p>
 	</main>
 </Layout>
 
 <script>
-	const currencyFormatter = new Intl.NumberFormat('es-CO', {
+	type Props = {
+		total: number,
+		currency?: string,
+		decimals?: number
+	}
+
+	const currencyFormatter = ({ total, currency = 'COP', decimals = 2 }: Props) => {
+		const formatter = new Intl.NumberFormat('es-CO', {
 			style: 'currency',
-			currency: 'COP',
-			maximumFractionDigits: 10
-	});
+			currency,
+			maximumFractionDigits: decimals
+		});
+
+		return formatter.format(total);
+	}
 
 	const calculateTax = (total: number) => {
 		const tax = ( total * 4 ) / 1000;
 		const taxFixed = parseFloat(tax.toFixed(2));
 		const spanTax = document.querySelector('#tax') as HTMLInputElement | null;
-		spanTax.innerHTML = `${currencyFormatter.format(taxFixed)}`;
+		spanTax.innerHTML = `${currencyFormatter({ total: taxFixed })}`;
 	}
 
 	const showAlert = (numberLength: number) => {
 		const alert = document.querySelector('#alert') as HTMLElement | null;
 		
-		if ( numberLength > 11 && !alert.classList.contains('show') ) alert.classList.add('show');
-		if ( numberLength <= 11  && alert.classList.contains('show') ) alert.classList.remove('show');
+		if ( numberLength > 11 && !alert.classList.contains('show') )
+			alert.classList.add('show');
+
+		if ( numberLength <= 11  && alert.classList.contains('show') )
+			alert.classList.remove('show');
 	}
 
 	const totalInput = document.querySelector('#pesos') as HTMLInputElement | null;
@@ -51,7 +68,7 @@ import ImageColumn from '../components/ImageColumn.astro';
 
 		if ( !isNaN(totalFloat) && totalString.length <= 11 ) {
 			const spanTotal = document.querySelector('#total') as HTMLInputElement | null;
-			spanTotal.innerHTML = `${currencyFormatter.format(totalFloat)}`;
+			spanTotal.innerHTML = `${currencyFormatter({ total: totalFloat, decimals: 0 })}`;
 			calculateTax(totalFloat);
 		}
 	});
@@ -81,6 +98,13 @@ import ImageColumn from '../components/ImageColumn.astro';
 	.page__col {
 		flex: 1 1 100%;
 		text-align: center;
+	}
+
+	.page__copy {
+		color: var(--color-border);
+		font-size: .8rem;
+		margin: 1.5rem 0;
+		opacity: .7;
 	}
 
 	@media (min-width: 768px) {
