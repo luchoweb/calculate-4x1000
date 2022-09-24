@@ -1,72 +1,60 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import CalculatorForm from '../components/CalculatorForm.astro';
+import ImageColumn from '../components/ImageColumn.astro';
 ---
 
 <Layout title="Calculadora del 4 x 1000 - Solo Colombia">
 	<main class="page__layout">
 		<div class="page__content">
 			<div class="page__col page__col--calculator">
-				<div class="page__form">
-					<h1>Calcular 4 x 1000</h1>
-
-					<div class="form__group">
-						<label for="total">
-							Ingrese el monto en pesos colombianos (sin puntos)
-						</label>
-						<input type="number" min="0" minlength="1" name="total" id="total" placeholder="1000000">
-					</div>
-
-					<button class="form_button">
-						Calcular impuesto
-					</button>
-
-					<hr role="separator" />
-
-					<ul class="page__taxes">
-						<li class="page__tax">
-							<p>
-								<strong>Monto ingresado</strong>: $<span id="tax">0</span>
-							</p>
-						</li>
-
-						<li class="page__tax">
-							<p>
-								<strong>4 x 1000 a pagar</strong>: $<span id="tax">0</span>
-							</p>
-						</li>
-					</ul>
-				</div>
+				<CalculatorForm />
 			</div>
 			<div class="page__col page__col--image">
-				<img src="/assets/images/taxes.jpg" alt="Tax" height="400">
-
-				<ul class="page__social">
-					<li>
-						<a href="https://github.com/luchoweb/calculate-4x1000" target="_blank" rel="noopener noreferrer" title="GitHub">
-							<img src="/assets/images/github-icon.png" alt="github" height="25">
-						</a>
-					</li>
-
-					<li>
-						<a href="https://www.linkedin.com/in/luchowebdev" target="_blank" rel="noopener noreferrer" title="LinkedIn">
-							<img src="/assets/images/linkedin-icon.png" alt="linkedin" height="25">
-						</a>
-					</li>
-
-					<li>
-						<a href="https://www.freepik.com/free-vector/monthly-expense-planning-reminder-appointment-payment-deadline-worker-with-timetable-organizer-schedule-countdown-payday-vector-isolated-concept-metaphor-illustration_12470255.htm#query=taxes&position=5&from_view=search" target="_blank" rel="noopener noreferrer" title="Vector by Freepik">
-							<img src="/assets/images/freepik-icon.png" alt="freepik" height="25">
-						</a>
-					</li>
-				</ul>
+				<ImageColumn />
 			</div>
 		</div>
 	</main>
 </Layout>
 
 <script>
-	const total = document.getElementById('total');
-	total.focus();
+	const currencyFormatter = new Intl.NumberFormat('es-CO', {
+			style: 'currency',
+			currency: 'COP',
+			maximumFractionDigits: 10
+	});
+
+	const calculateTax = (total: number) => {
+		const tax = ( total * 4 ) / 1000;
+		const taxFixed = parseFloat(tax.toFixed(2));
+		const spanTax = document.querySelector('#tax') as HTMLInputElement | null;
+		spanTax.innerHTML = `${currencyFormatter.format(taxFixed)}`;
+	}
+
+	const showAlert = (numberLength: number) => {
+		const alert = document.querySelector('#alert') as HTMLElement | null;
+		
+		if ( numberLength > 11 && !alert.classList.contains('show') ) alert.classList.add('show');
+		if ( numberLength <= 11  && alert.classList.contains('show') ) alert.classList.remove('show');
+	}
+
+	const totalInput = document.querySelector('#pesos') as HTMLInputElement | null;
+	totalInput.focus();
+
+	totalInput.addEventListener('keyup', (event) => {
+		// @ts-ignore
+		const totalString = event.target.value;
+		const totalFloat = parseFloat(totalString);
+
+		// Limit alert
+		showAlert(totalString.length);
+
+		if ( !isNaN(totalFloat) && totalString.length <= 11 ) {
+			const spanTotal = document.querySelector('#total') as HTMLInputElement | null;
+			spanTotal.innerHTML = `${currencyFormatter.format(totalFloat)}`;
+			calculateTax(totalFloat);
+		}
+	});
 </script>
 
 <style>
@@ -74,7 +62,7 @@ import Layout from '../layouts/Layout.astro';
 		align-items: center;
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
+		padding-top: .5rem;
 		min-height: 100vh;
 		width: 100%;
 	}
@@ -92,111 +80,31 @@ import Layout from '../layouts/Layout.astro';
 
 	.page__col {
 		flex: 1 1 100%;
-	}
-
-	.page__form {
-		padding: 2rem;
-	}
-	.page__form h1 {
-		margin: 0 0 2rem 0;
-	}
-
-	.form__group {
-		margin-bottom: 1rem;
-	}
-	.form__group label {
-		display: block;
-		margin-bottom: 1rem;
-	}
-	.form__group input {
-		appearance: none;
-		border: 2px solid var(--color-primary-dark);
-		border-radius: .5rem;
-		font-size: 1rem;
-		padding: 1rem;
-		max-width: 310px;
-		transition: border 200ms ease-in-out;
-		width: 100%;
-	}
-	.form__group input:focus {
-		border: 2px solid var(--color-primary);
-	}
-
-	.form_button {
-		appearance: none;
-		background-color: var(--color-primary-dark);
-		border: none;
-		border-radius: 1.5rem;
-		color: var(--color-light);
-		cursor: pointer;
-		font-size: 1rem;
-		padding: 1rem 2rem;
-		transition: background 200ms ease-in-out;
-	}
-	.form_button:hover {
-		background-color: var(--color-primary);
-	}
-
-	.page__col--calculator {
-		order: 2;
 		text-align: center;
-	}
-
-	.page__col--image {
-		order: 1;
-		text-align: center;
-	}
-	.page__col--image > img {
-		height: 200px;
-	}
-
-	.page__social {
-		align-items: center;
-		display: flex;
-		gap: 1rem;
-		list-style: none;
-		justify-content: center;
-		margin: 1rem 0 0;
-		padding: 0;
-	}
-
-	.page__taxes {
-		list-style: none;
-		margin: 2rem 0 0;
-		padding: 0;
-	}
-
-	.page__tax {
-		margin-bottom: .5rem;
-		text-align: left;
-	}
-	.page__tax p {
-		margin: 0;
-	}
-
-	hr {
-		border: none;
-		border-top: 1px solid #ccc;
-		margin: 2rem 0;
 	}
 
 	@media (min-width: 768px) {
+		.page__layout {
+			justify-content: center;
+			padding-top: 0;
+		}
+
 		.page__content {
 			width: 700px;
 		}
 
 		.page__col {
-		flex: 1 1 50%;
-	}
+			flex: 1 1 50%;
+		}
 
 		.page__col--calculator {
 			order: 1;
 			text-align: left;
 		}
+
 		.page__col--image {
 			order: 2;
 		}
-
 		.page__col--image > img {
 			height: 300px;
 		}

@@ -1,0 +1,132 @@
+<div class="page__form">
+  <h1>Calcular 4 x 1000</h1>
+
+  <form>
+    <div class="form__group">
+      <label for="total">
+        Ingrese el monto en pesos colombianos (sin puntos)
+      </label>
+      <input type="number" id="pesos" placeholder="Ejemplo: 12500">
+    </div>
+  </form>
+
+  <div class="form__alert" id="alert">
+    <p>El monto ingresado es muy alto, por favor ingrese un monto de hasta 11 cifras</p>
+  </div>
+
+  <hr role="separator" />
+
+  <ul class="page__taxes">
+    <li class="page__tax">
+      <p>
+        <strong>Monto ingresado</strong>: <span id="total">$ 0,00</span>
+      </p>
+    </li>
+
+    <li class="page__tax">
+      <p>
+        <strong>Impuesto a pagar</strong>: <span id="tax">$ 0,00</span>
+      </p>
+    </li>
+  </ul>
+
+  <p class="page__disclaimer">
+    El impuesto es calculado hasta 2 decimales, puede que el banco haga redondeo de cifras y el impuesto cobrado sea por decimas diferente al aquí dado.
+  </p>
+</div>
+
+<style>
+  .page__form {
+		padding: 2rem 1rem;
+	}
+	.page__form h1 {
+		margin: 0 0 2rem 0;
+	}
+
+	.form__group {
+		margin-bottom: 1rem;
+    text-align: left;
+	}
+	.form__group label {
+		display: block;
+		margin-bottom: 1rem;
+	}
+	.form__group input {
+		appearance: none;
+		border: 2px solid var(--color-primary-dark);
+		border-radius: .5rem;
+		font-size: 1rem;
+		padding: 1rem .8rem;
+		transition: border 200ms ease-in-out;
+		width: 92%;
+	}
+	.form__group input:focus {
+		border: 2px solid var(--color-primary);
+	}
+
+	.form__alert {
+		background-color: var(--color-danger);
+		color: var(--color-danger-text);
+		font-size: .9rem;
+		max-height: 0;
+		transition: all 200ms ease-in-out;
+	}
+	.form__alert p {
+		display: none;
+		margin: 0;
+	}
+	.form__alert.show {
+		margin-top: 1.5rem;
+		max-height: 51px;
+		padding: 1rem;
+	}
+	.form__alert.show p {
+		display: block;
+	}
+
+  .page__taxes {
+		list-style: none;
+		margin: 2rem 0 0;
+		padding: 0;
+	}
+
+	.page__tax {
+		margin-bottom: .5rem;
+		text-align: left;
+	}
+	.page__tax p {
+		margin: 0;
+	}
+
+	.page__disclaimer {
+    color: #555;
+    font-size: .8rem;
+		margin: 2rem 0 0;
+	}
+
+	hr {
+		border: none;
+		border-top: 1px solid #ccc;
+		margin: 2rem 0;
+	}
+
+	@media (min-width: 768px) {
+		.page__form {
+			padding: 2rem;
+		}
+
+    .form__group label {
+      margin-bottom: 1.5rem;
+    }
+
+		.form__group input {
+			max-width: 255px;
+		}
+	}
+
+	@media (min-width: 991px) {
+		.form__group input {
+			max-width: 280px;
+		}
+	}
+</style>
